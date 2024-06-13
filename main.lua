@@ -1,4 +1,5 @@
 local utils = require("utils")
+local js = require("js")
 local M = {}
 
 function define_routes(input, content_type, folder)
@@ -34,6 +35,7 @@ M.define_element = function(define)
 	end
 
 	element(define.tag, define.path, styles, scripts)
+	js.appendElement(define.tag, getbody(define.path))
 end
 
 return M
