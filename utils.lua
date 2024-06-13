@@ -10,26 +10,6 @@ M.split = function(input, separator)
 	return result;
 end
 
-M.define_routes = function(input, content_type, folder)
-	local result = {}
-
-	if (input == nil) then
-		return result
-	end
-
-	for i, value in ipairs(input) do
-		local sp = M.split(value, '/')
-		local add = "/smp/" .. folder .. "/" .. sp[#sp]
-
-		table.insert(result, add)
-		route(add, function(request)
-			return { status = 200, content_type = content_type, body = getbody(value) }
-		end)
-	end
-
-	return result
-end
-
 M.table_concat = function(a, b)
 	if (b == nil) then
 		return a
