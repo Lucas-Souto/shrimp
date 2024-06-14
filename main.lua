@@ -39,8 +39,7 @@ M.define_element = function(define)
 		local temp = ""
 
 		for i = 1, #define.variables do
-			temp = "$" .. define.variables[i] .. "$"
-			variables[temp] = temp
+			variables[define.variables[i]] = "$" .. define.variables[i] .. "$"
 		end
 	end
 
