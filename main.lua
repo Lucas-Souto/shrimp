@@ -35,7 +35,7 @@ M.define_element = function(define)
 		utils.table_concat(scripts, define.dependencies.scripts)
 	end
 
-	if define.variables != nil then
+	if define.variables ~= nil then
 		local temp = ""
 
 		for i = 1, #define.variables do
