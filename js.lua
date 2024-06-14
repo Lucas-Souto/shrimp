@@ -2,7 +2,7 @@ local M = {}
 local script = [[const elements = {};
 function renderElement(tag, data)
 {
-	const element = elements[tag];
+	let element = elements[tag];
 
 	for (let key in data) element = element.replaceAll(`$${key}$`, data[key]);
 
