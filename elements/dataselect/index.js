@@ -17,7 +17,6 @@ function _onSelectFocus(e)
 function _onSelectClick(e)
 {
 	e.target.parentElement.dropdown.classList.toggle("show");
-	_updateOptions(e.target.parentElement);
 }
 
 function _onOptionClick(e)
@@ -77,7 +76,7 @@ function _onSelectKey(e)
 
 	if (!select.dropdown.classList.contains("show")) return _onSelectFocus(e);
 
-	if (select.interval != -1) clearInterval(select.interval);
+	if (select._interval != -1) clearInterval(select._interval);
 
 	switch (e.key)
 	{
@@ -110,7 +109,7 @@ function _onSelectKey(e)
 				return;
 			}
 
-			select.interval = setInterval(() => _updateOptions(select), 500);
+			select._interval = setInterval(() => _updateOptions(select), 500);
 			break;
 	}
 }
@@ -119,8 +118,9 @@ for (let i = 0; i < selects.length; i++)
 {
 	selects[i].options = [];
 	selects[i].value = "";
+	selects[i].draw = () => _updateOptions(selects[i]);
 	selects[i]._currentIndex = -1;
-	selects[i].interval = -1;
+	selects[i]._interval = -1;
 	selects[i].input = selects[i].getElementsByClassName("dataselect-input")[0];
 	selects[i].dropdown = selects[i].getElementsByClassName("dataselect-options")[0];
 
