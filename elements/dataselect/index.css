@@ -3,8 +3,22 @@
 	position: relative;
 }
 
+.dataselect-input
+{
+	width: 200px;
+	height: fit-content;
+	outline: none;
+	min-height: 1em;
+	font-size: 16px;
+
+	padding: .1em;
+
+	border: 1px solid gray;
+}
+
 .dataselect-options
 {
+	z-index: 1000;
 	width: fit-content;
 	min-width: 200px;
 	height: fit-content;

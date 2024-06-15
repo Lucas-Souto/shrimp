@@ -14,11 +14,19 @@ function _onSelectFocus(e)
 	_updateOptions(e.target.parentElement);
 }
 
+function _onSelectClick(e)
+{
+	e.target.parentElement.dropdown.classList.toggle("show");
+	_updateOptions(e.target.parentElement);
+}
+
 function _onOptionClick(e)
 {
 	const select = e.target.closest(".dataselect");
 	select.value = e.target.dataset.value;
 	select.input.value = e.target.innerText;
+
+	if (select.dataset.search === "false") select.input.innerText = select.input.value;
 
 	select.dropdown.classList.remove("show");
 	select.dispatchEvent(valueset);
@@ -27,17 +35,14 @@ function _onOptionClick(e)
 function _updateOptions(select)
 {
 	select._currentIndex = -1;
-	select.value = "";
 	select.dropdown.innerHTML = "";
 	
-	if (select.input.value.length === 0) return;
-
 	let options = select.options;
 	const split = select.input.value.toLowerCase().split(" ");
 
 	for (let i = 0; i < options.length; i++)
 	{
-		if (select.dataset.type === "pre")
+		if (select.dataset.type === "pre" && select.dataset.search === "true")
 		{
 			let found = false;
 
@@ -54,9 +59,13 @@ function _updateOptions(select)
 			if (!found) continue;
 		}
 
-		select.dropdown.innerHTML += `<div class="dataselect-option" data-value="${options[i][0]}">${options[i][1]}</div>`;
+		const option = document.createElement("div");
+		option.dataset.value = options[i][0];
+		option.innerText = options[i][1];
 
-		select.dropdown.lastChild.addEventListener("click", _onOptionClick);
+		option.classList.add("dataselect-option");
+		option.addEventListener("click", _onOptionClick);
+		select.dropdown.appendChild(option);
 	}
 }
 
@@ -108,8 +117,6 @@ function _onSelectKey(e)
 
 for (let i = 0; i < selects.length; i++)
 {
-	const type = selects[i].dataset.type;
-	const search = selects[i].dataset.search;
 	selects[i].options = [];
 	selects[i].value = "";
 	selects[i]._currentIndex = -1;
@@ -117,7 +124,7 @@ for (let i = 0; i < selects.length; i++)
 	selects[i].input = selects[i].getElementsByClassName("dataselect-input")[0];
 	selects[i].dropdown = selects[i].getElementsByClassName("dataselect-options")[0];
 
-	if (type === "pre")
+	if (selects[i].dataset.type === "pre")
 	{
 		const options = selects[i].querySelectorAll("option");
 
@@ -128,8 +135,29 @@ for (let i = 0; i < selects.length; i++)
 		}
 	}
 
-	selects[i].input.addEventListener("focus", _onSelectFocus);
-	selects[i].input.addEventListener("keydown", _onSelectKey);
+	if (selects[i].dataset.search === "true")
+	{
+		selects[i].input.value = "";
+
+		selects[i].input.addEventListener("keydown", _onSelectKey);
+		selects[i].input.addEventListener("focus", _onSelectFocus);
+	}
+	else
+	{
+		selects[i].removeChild(selects[i].input);
+
+		selects[i].input = document.createElement("div");
+		selects[i].input.value = "";
+
+		selects[i].appendChild(selects[i].input);
+		selects[i].input.classList.add("dataselect-input");
+		selects[i].input.addEventListener("click", _onSelectClick);
+
+		_updateOptions(selects[i]);
+
+		if (selects[i].dropdown.childElementCount) _onOptionClick({ target: selects[i].dropdown.children[0] });
+	}
+
 	window.addEventListener("click", (e) =>
 	{
 		if (e.target != selects[i] && !selects[i].contains(e.target)) selects[i].dropdown.classList.remove("show");
