@@ -118,6 +118,7 @@ for (let i = 0; i < selects.length; i++)
 {
 	selects[i].options = [];
 	selects[i].value = "";
+	selects[i].select = (index) => _onOptionClick({ target: selects[i].dropdown.children[index] });
 	selects[i].draw = () => _updateOptions(selects[i]);
 	selects[i]._currentIndex = -1;
 	selects[i]._interval = -1;
@@ -154,8 +155,7 @@ for (let i = 0; i < selects.length; i++)
 		selects[i].input.addEventListener("click", _onSelectClick);
 
 		_updateOptions(selects[i]);
-
-		if (selects[i].dropdown.childElementCount) _onOptionClick({ target: selects[i].dropdown.children[0] });
+		selects[i].select(0);
 	}
 
 	window.addEventListener("click", (e) =>
