@@ -2,7 +2,7 @@ local utils = require("utils")
 local js = require("js")
 local M = {}
 
-function define_routes(input, content_type, folder)
+function define_routes(tag, input, content_type, folder)
 	local result = {}
 
 	if (input == nil) then
@@ -14,7 +14,7 @@ function define_routes(input, content_type, folder)
 	for i = 1, #input do
 		value = input[i]
 		sp = utils.split(value, '/')
-		add = "/smp/" .. folder .. "/" .. sp[#sp]
+		add = "/smp/" .. folder .. "/" .. tag .. "." .. sp[#sp]
 
 		table.insert(result, add)
 		route(add, function(request)
@@ -26,8 +26,8 @@ function define_routes(input, content_type, folder)
 end
 
 M.define_element = function(define)
-	local scripts = define_routes(define.scripts, "text/javascript", "js")
-	local styles = define_routes(define.styles, "text/css", "css")
+	local scripts = define_routes(define.tag, define.scripts, "text/javascript", "js")
+	local styles = define_routes(define.tag, define.styles, "text/css", "css")
 	local variables = {};
 
 	if define.dependencies ~= nil then
