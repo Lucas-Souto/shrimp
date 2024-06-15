@@ -1,9 +1,9 @@
-.dataselect
+.selearch
 {
 	position: relative;
 }
 
-.dataselect-input
+.selearch-input
 {
 	width: 200px;
 	height: fit-content;
@@ -16,25 +16,7 @@
 	border: 1px solid gray;
 }
 
-div.dataselect-input
-{
-	position: relative;
-}
-
-div.dataselect-input:after
-{
-	content: "";
-	width: 8px;
-	aspect-ratio: 1;
-	position: absolute;
-	top: 8px;
-	right: 8px;
-
-	background-color: black;
-	clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
-}
-
-.dataselect-options
+.selearch-options
 {
 	z-index: 1000;
 	width: fit-content;
@@ -52,27 +34,27 @@ div.dataselect-input:after
 	background-color: white;
 }
 
-.dataselect-options.show
+.selearch-options.show
 {
 	display: flex;
 	flex-direction: column;
 }
 
-.dataselect-option:hover,
-.dataselect-option.selected
+.selearch-option:hover,
+.selearch-option.selected
 {
 	cursor: pointer;
 	background-color: lightgray;
 }
 
-.dataselect-option:not(:first-child)
+.selearch-option:not(:first-child)
 {
 	border-top: 1px solid gray;
 }
 
-.dataselect-option:not(:last-child)
+.selearch-option:not(:last-child)
 {
 	border-bottom: 1px solid gray;
 }
 
-.dataselect option { display: none; }
+.selearch option { display: none; }

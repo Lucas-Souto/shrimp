@@ -17,11 +17,11 @@ M.define = function()
 
 	main.define_element
 	{
-		tag = "dataselect",
-		path = current_dir .. "dataselect/index.html",
-		scripts = { current_dir .. "dataselect/index.js" },
-		styles = { current_dir .. "dataselect/index.css" },
-		variables = { "search", "content", "id" }
+		tag = "selearch",
+		path = current_dir .. "selearch/index.html",
+		scripts = { current_dir .. "selearch/index.js" },
+		styles = { current_dir .. "selearch/index.css" },
+		variables = { "id", "content" }
 	}
 end
 

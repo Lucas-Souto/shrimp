@@ -1,7 +1,7 @@
 (function(){
 
-const selects = document.getElementsByClassName("dataselect");
-const valueset = new CustomEvent("valueset",
+const selects = document.getElementsByClassName("selearch");
+const onchange = new Event("change",
 {  
 	bubbles: true,
 	cancelable: true,
@@ -14,26 +14,19 @@ function _onSelectFocus(e)
 	_updateOptions(e.target.parentElement);
 }
 
-function _onSelectClick(e)
-{
-	e.target.parentElement.dropdown.classList.toggle("show");
-}
-
 function _setValue(select, value, text)
 {
 	select.value = value;
 	select.input.value = text;
-
-	if (select.dataset.search === "false") select.input.innerText = text;
 }
 
 function _onOptionClick(e)
 {
-	const select = e.target.closest(".dataselect");
+	const select = e.target.closest(".selearch");
 
 	_setValue(select, e.target.dataset.value, e.target.innerText);
 	select.dropdown.classList.remove("show");
-	select.dispatchEvent(valueset);
+	select.dispatchEvent(onchange);
 }
 
 function _updateOptions(select)
@@ -43,31 +36,29 @@ function _updateOptions(select)
 	
 	let options = select.options;
 	const split = select.input.value.toLowerCase().split(" ");
+	let found;
 
 	for (let i = 0; i < options.length; i++)
 	{
-		if (select.dataset.search === "true")
+		found = false;
+
+		for (let j = 0; j < split.length; j++)
 		{
-			let found = false;
-
-			for (let j = 0; j < split.length; j++)
+			if (options[i][1].toLowerCase().indexOf(split[j]) !== -1)
 			{
-				if (options[i][1].toLowerCase().indexOf(split[j]) !== -1)
-				{
-					found = true;
+				found = true;
 
-					break;
-				}
+				break;
 			}
-
-			if (!found) continue;
 		}
+
+		if (!found) continue;
 
 		const option = document.createElement("div");
 		option.dataset.value = options[i][0];
 		option.innerText = options[i][1];
 
-		option.classList.add("dataselect-option");
+		option.classList.add("selearch-option");
 		option.addEventListener("click", _onOptionClick);
 		select.dropdown.appendChild(option);
 	}
@@ -118,6 +109,7 @@ function _onSelectKey(e)
 
 				return;
 			}
+			else select.value = "";
 
 			select._interval = setInterval(() => _updateOptions(select), 500);
 			break;
@@ -129,11 +121,10 @@ for (let i = 0; i < selects.length; i++)
 	selects[i].options = [];
 	selects[i].value = "";
 	selects[i].select = (index) => _setValue(selects[i], selects[i].options[index][0], selects[i].options[index][1]);
-	selects[i].draw = () => _updateOptions(selects[i]);
 	selects[i]._currentIndex = -1;
 	selects[i]._interval = -1;
-	selects[i].input = selects[i].getElementsByClassName("dataselect-input")[0];
-	selects[i].dropdown = selects[i].getElementsByClassName("dataselect-options")[0];
+	selects[i].input = selects[i].getElementsByClassName("selearch-input")[0];
+	selects[i].dropdown = selects[i].getElementsByClassName("selearch-options")[0];
 
 	const options = selects[i].querySelectorAll("option");
 
@@ -143,28 +134,10 @@ for (let i = 0; i < selects.length; i++)
 		selects[i].removeChild(options[j]);
 	}
 
-	if (selects[i].dataset.search === "true")
-	{
-		selects[i].input.value = "";
+	selects[i].input.value = "";
 
-		selects[i].input.addEventListener("keydown", _onSelectKey);
-		selects[i].input.addEventListener("focus", _onSelectFocus);
-	}
-	else
-	{
-		selects[i].removeChild(selects[i].input);
-
-		selects[i].input = document.createElement("div");
-		selects[i].input.value = "";
-
-		selects[i].appendChild(selects[i].input);
-		selects[i].input.classList.add("dataselect-input");
-		selects[i].input.addEventListener("click", _onSelectClick);
-
-		_updateOptions(selects[i]);
-		selects[i].select(0);
-	}
-
+	selects[i].input.addEventListener("keydown", _onSelectKey);
+	selects[i].input.addEventListener("focus", _onSelectFocus);
 	window.addEventListener("click", (e) =>
 	{
 		if (e.target != selects[i] && !selects[i].contains(e.target)) selects[i].dropdown.classList.remove("show");
