@@ -1,6 +1,12 @@
 (function(){
 
 const selects = document.getElementsByClassName("dataselect");
+const valueset = new CustomEvent("valueset",
+{  
+	bubbles: true,
+	cancelable: true,
+	composed: false
+});
 
 function _onSelectFocus(e)
 {
@@ -15,11 +21,13 @@ function _onOptionClick(e)
 	select.input.value = e.target.innerText;
 
 	select.dropdown.classList.remove("show");
+	select.dispatchEvent(valueset);
 }
 
 function _updateOptions(select)
 {
 	select._currentIndex = -1;
+	select.value = "";
 	select.dropdown.innerHTML = "";
 	
 	if (select.input.value.length === 0) return;

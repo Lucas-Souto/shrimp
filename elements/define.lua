@@ -8,7 +8,8 @@ M.define = function()
 		tag = "dataselect",
 		path = current_dir .. "dataselect/index.html",
 		scripts = { current_dir .. "dataselect/index.js" },
-		styles = { current_dir .. "dataselect/index.css" }
+		styles = { current_dir .. "dataselect/index.css" },
+		variables = { "type", "search", "content" }
 	}
 end
 
