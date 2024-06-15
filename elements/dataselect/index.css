@@ -16,6 +16,24 @@
 	border: 1px solid gray;
 }
 
+div.dataselect-input
+{
+	position: relative;
+}
+
+div.dataselect-input:after
+{
+	content: "";
+	width: 8px;
+	aspect-ratio: 1;
+	position: absolute;
+	top: 8px;
+	right: 8px;
+
+	background-color: black;
+	clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+}
+
 .dataselect-options
 {
 	z-index: 1000;
