@@ -81,7 +81,12 @@ function _onSelectKey(e)
 
 	if (!select.dropdown.classList.contains("show")) return _onSelectFocus(e);
 
-	if (select._interval != -1) clearInterval(select._interval);
+	if (select._interval != -1)
+	{
+		clearInterval(select._interval);
+
+		select._interval = -1;
+	}
 
 	switch (e.key)
 	{
