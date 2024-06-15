@@ -9,7 +9,7 @@ M.define = function()
 		path = current_dir .. "dataselect/index.html",
 		scripts = { current_dir .. "dataselect/index.js" },
 		styles = { current_dir .. "dataselect/index.css" },
-		variables = { "type", "search", "content", "id", "class" }
+		variables = { "search", "content", "id", "class" }
 	}
 end
 

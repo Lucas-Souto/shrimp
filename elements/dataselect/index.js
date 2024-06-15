@@ -19,14 +19,19 @@ function _onSelectClick(e)
 	e.target.parentElement.dropdown.classList.toggle("show");
 }
 
+function _setValue(select, value, text)
+{
+	select.value = value;
+	select.input.value = text;
+
+	if (select.dataset.search === "false") select.input.innerText = text;
+}
+
 function _onOptionClick(e)
 {
 	const select = e.target.closest(".dataselect");
-	select.value = e.target.dataset.value;
-	select.input.value = e.target.innerText;
 
-	if (select.dataset.search === "false") select.input.innerText = select.input.value;
-
+	_setValue(select, e.target.dataset.value, e.target.innerText);
 	select.dropdown.classList.remove("show");
 	select.dispatchEvent(valueset);
 }
@@ -41,7 +46,7 @@ function _updateOptions(select)
 
 	for (let i = 0; i < options.length; i++)
 	{
-		if (select.dataset.type === "pre" && select.dataset.search === "true")
+		if (select.dataset.search === "true")
 		{
 			let found = false;
 
@@ -118,22 +123,19 @@ for (let i = 0; i < selects.length; i++)
 {
 	selects[i].options = [];
 	selects[i].value = "";
-	selects[i].select = (index) => _onOptionClick({ target: selects[i].dropdown.children[index] });
+	selects[i].select = (index) => _setValue(selects[i], selects[i].options[index][0], selects[i].options[index][1]);
 	selects[i].draw = () => _updateOptions(selects[i]);
 	selects[i]._currentIndex = -1;
 	selects[i]._interval = -1;
 	selects[i].input = selects[i].getElementsByClassName("dataselect-input")[0];
 	selects[i].dropdown = selects[i].getElementsByClassName("dataselect-options")[0];
 
-	if (selects[i].dataset.type === "pre")
-	{
-		const options = selects[i].querySelectorAll("option");
+	const options = selects[i].querySelectorAll("option");
 
-		for (let j = 0; j < options.length; j++)
-		{
-			selects[i].options.push([options[j].value, options[j].text]);
-			selects[i].removeChild(options[j]);
-		}
+	for (let j = 0; j < options.length; j++)
+	{
+		selects[i].options.push([options[j].value, options[j].text]);
+		selects[i].removeChild(options[j]);
 	}
 
 	if (selects[i].dataset.search === "true")
