@@ -28,23 +28,27 @@ end
 M.define_element = function(define)
 	local scripts = define_routes(define.tag, define.scripts, "text/javascript", "js")
 	local styles = define_routes(define.tag, define.styles, "text/css", "css")
-	local variables = {};
 
 	if define.dependencies ~= nil then
 		utils.table_concat(styles, define.dependencies.styles)
 		utils.table_concat(scripts, define.dependencies.scripts)
 	end
 
-	if define.variables ~= nil then
-		local temp = ""
-
-		for i = 1, #define.variables do
-			variables[define.variables[i]] = "$" .. define.variables[i] .. "$"
-		end
-	end
-
 	element(define.tag, define.path, styles, scripts)
-	js.appendElement(define.tag, render(define.path, variables))
+	
+	if define.appendToIndex then
+		local variables = {}
+
+		if define.variables ~= nil then
+			local temp = ""
+
+			for i = 1, #define.variables do
+				variables[define.variables[i]] = "$" .. define.variables[i] .. "$"
+			end
+		end
+
+		js.appendElement(define.tag, render(define.path, variables))
+	end
 end
 
 return M

@@ -11,18 +11,13 @@ function renderElement(tag, data)
 
 	return temp.firstChild;
 }]];
-local defined = false
 
-M.appendElement = function (tag, body)
+M.getbody = function()
+	return script;
+end
+
+M.appendElement = function(tag, body)
 	script = script .. "elements['" .. tag .. "'] = `" .. body .. "`;"
-
-	if not defined then
-		defined = true
-
-		route("/smp/index.js", function (request)
-			return { status = 200, content_type = "text/javascript", body = script }
-		end)
-	end
 end
 
 return M
